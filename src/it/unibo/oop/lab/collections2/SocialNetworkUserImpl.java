@@ -1,7 +1,10 @@
 package it.unibo.oop.lab.collections2;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -29,6 +32,8 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * 
      * think of what type of keys and values would best suit the requirements
      */
+	private Map<U, String> mapFollowed = new HashMap<>();
+	
 
     /*
      * [CONSTRUCTORS]
@@ -40,7 +45,6 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * 
      * 2) Define a further constructor where age is defaulted to -1
      */
-
     /**
      * Builds a new {@link SocialNetworkUserImpl}.
      * 
@@ -57,6 +61,10 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
     public SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
         super(name, surname, user, userAge);
     }
+    
+    public SocialNetworkUserImpl(final String name, final String surname, final String user) {
+        this(name, surname, user, -1);
+    }
 
     /*
      * [METHODS]
@@ -64,19 +72,26 @@ public class SocialNetworkUserImpl<U extends User> extends UserImpl implements S
      * Implements the methods below
      */
 
-    @Override
     public boolean addFollowedUser(final String circle, final U user) {
+    	if(user == null) {
+    		return true;
+    	}
+    	this.mapFollowed.put(user, circle);
         return false;
     }
 
-    @Override
     public Collection<U> getFollowedUsersInGroup(final String groupName) {
-        return null;
+    	List<U> groupFollowed = new ArrayList<>();
+    	for(U u : this.mapFollowed.keySet()) {
+    		if(this.mapFollowed.get(u).equals(groupName)){
+    			groupFollowed.add(u);
+    		}
+    	}
+    	return groupFollowed;
     }
 
-    @Override
     public List<U> getFollowedUsers() {
-        return null;
+    	List<U> allFollowed = new ArrayList<>(this.mapFollowed.keySet());
+        return allFollowed;
     }
-
 }
